@@ -283,10 +283,8 @@ void function SliderBarUpdate()
 
 	float jump = minYPos - ( useableSpace / ( float( file.filteredList.len() ) ) )
 
-	// got local from official respaw scripts, without untyped throws an error
-
-	local pos =	Hud_GetPos( sliderButton )[1]
-	local newPos = pos - mouseDeltaBuffer.deltaY
+	float yPos = float( expect int( Hud_GetPos( sliderButton )[1] ) )
+	float newPos = yPos - mouseDeltaBuffer.deltaY
 	FlushMouseDeltaBuffer()
 
 	if ( newPos < maxYPos ) newPos = maxYPos
