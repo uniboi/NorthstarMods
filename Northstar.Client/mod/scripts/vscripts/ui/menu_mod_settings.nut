@@ -7,6 +7,7 @@ global function AddModSettingsButton
 global function AddModTitle
 global function AddModCategory
 global function PureModulo
+global function AddModSettingsButton
 
 const int BUTTONS_PER_PAGE = 15
 const string SETTING_ITEM_TEXT = "                        " // this is long enough to be the same size as the textentry field
@@ -190,7 +191,6 @@ float function PureModulo( int a, int b )
 
 void function ResetConVar( var button )
 {
-	print("ok")
 	ConVarData conVar = file.filteredList[ int ( Hud_GetScriptID( Hud_GetParent( button ) ) ) + file.scrollOffset ]
 
 	if ( conVar.isCategoryName )
@@ -203,7 +203,7 @@ void function ShowAreYouSureDialog( string header, void functionref() func, stri
 	DialogData dialogData
 	dialogData.header = header
 	dialogData.message = details
-	
+
 	AddDialogButton( dialogData, "#NO" )
 	AddDialogButton( dialogData, "#YES", func )
 
@@ -423,6 +423,17 @@ void function UpdateList()
 			SetModMenuNameText( file.modPanels[i] )
 	}
 	file.updatingList = false
+
+	if (file.conVarList.len() <= 0)
+	{
+		Hud_SetVisible( Hud_GetChild(file.menu, "NoResultLabel"), true )
+		Hud_SetText( Hud_GetChild(file.menu, "NoResultLabel"), "#NO_MODS" )
+	}
+	else if (file.filteredList.len() <= 0)
+	{
+		Hud_SetVisible( Hud_GetChild(file.menu, "NoResultLabel"), true )
+		Hud_SetText( Hud_GetChild(file.menu, "NoResultLabel"), "#NO_RESULTS" )
+	}
 }
 
 array<ConVarData> function GetModConVarDatas( array<ConVarData> arr, int index )
@@ -434,7 +445,7 @@ array<ConVarData> function GetModConVarDatas( array<ConVarData> arr, int index )
 
 array<ConVarData> function GetCatConVarDatas( int index )
 {
-	if ( index == 0 || file.conVarList[ index - 1 ].spaceType != eEmptySpaceType.None )
+	if ( file.conVarList[ index - 1 ].spaceType != eEmptySpaceType.None )
 		return [ file.conVarList[ index ] ]
 	return [ file.conVarList[ index - 1 ], file.conVarList[ index ] ]
 }
@@ -577,11 +588,9 @@ void function SetModMenuNameText( var button )
 		else Hud_SetText( textField, conVar.isEnumSetting ? conVar.values[ GetConVarInt( conVar.conVar ) ] : GetConVarString( conVar.conVar ) )
 		Hud_SetPos( label, int(scaleX * 25), 0 )
 		Hud_SetText( resetButton, "" )
-		// Hud_SetSize( resetButton, int(scaleX * 90), int(scaleY * 40) )
 		if (conVar.sliderEnabled)
 			Hud_SetSize( label, int(scaleX * (375 + 85)), int(scaleY * 40) )
 		else Hud_SetSize( label, int(scaleX * (375 + 405)), int(scaleY * 40) )
-		//Hud_SetSize( customMenuButton, 0, 40 )
 		if ( conVar.type == "float" )
 			Hud_SetText( textField, string( GetConVarFloat( conVar.conVar ) ) )
 		else Hud_SetText( textField, conVar.isEnumSetting ? conVar.values[ GetConVarInt( conVar.conVar ) ] : GetConVarString( conVar.conVar ) )
@@ -591,10 +600,8 @@ void function SetModMenuNameText( var button )
 		if ( conVar.sliderEnabled )
 			Hud_SetSize( label, int( scaleX * ( 375 + 85 ) ), int( scaleY * 40 ) )
 		else Hud_SetSize( label, int( scaleX * ( 375 + 405 ) ), int( scaleY * 40 ) )
-		// Hud_SetSize( customMenuButton, 0, 40 )
 		Hud_SetVisible( label, true )
 		Hud_SetVisible( textField, true )
-		// Hud_SetVisible( enumButton, true )
 		Hud_SetVisible( resetButton, true )
 		Hud_SetVisible( resetVGUI, true )
 	}
@@ -643,7 +650,6 @@ void function UpdateListSliderPosition()
 
 	float jump = minYPos - ( useableSpace / ( mods - float( BUTTONS_PER_PAGE ) ) * file.scrollOffset )
 
-	// jump = jump * ( GetScreenSize()[1] / 1080.0 )
 
 	if ( jump > minYPos ) jump = minYPos
 
@@ -670,6 +676,8 @@ void function OnClick( var button )
 {
 	if (file.resetModButtons.contains(GetFocus()))
 		thread CheckFocus(GetFocus())
+	if (GetFocus() == Hud_GetChild(file.menu, "NoResultLabel"))
+		thread CheckFocus(GetFocus())
 }
 
 void function CheckFocus( var button )
@@ -679,6 +687,8 @@ void function CheckFocus( var button )
 	{
 		thread ResetConVar(GetFocus())
 	}
+	if (GetFocus() == Hud_GetChild(file.menu, "NoResultLabel"))
+		LaunchExternalWebBrowser( "https://northstar.thunderstore.io/", WEBBROWSER_FLAG_FORCEEXTERNAL )
 }
 
 void function OnFiltersChange()
@@ -736,14 +746,12 @@ void function AddModCategory( string catName, int stackPos = 2 )
 {
 	if ( !( getstackinfos( stackPos )[ "func" ] in file.setFuncs ) )
 		throw getstackinfos( stackPos )[ "src" ] + " #" + getstackinfos( stackPos )[ "line" ] + "\nCannot add a category before a mod title!"
-	if ( file.currentCat != "" )
-	{
-		ConVarData space
-		space.isEmptySpace = true
-		space.modName = file.currentMod
-		space.catName = catName
-		file.conVarList.append( space )
-	}
+	
+	ConVarData space
+	space.isEmptySpace = true
+	space.modName = file.currentMod
+	space.catName = catName
+	file.conVarList.append( space )
 
 	ConVarData catData
 
