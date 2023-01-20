@@ -79,7 +79,6 @@ void function AddModSettingsMenu()
 void function InitModMenu()
 {
 	file.menu = GetMenu( "ModSettings" )
-	// DumpStack(2)
 	AddMenuFooterOption( file.menu, BUTTON_B, "#B_BUTTON_BACK", "#BACK" )
 
 	/////////////////////////////
@@ -95,8 +94,6 @@ void function InitModMenu()
 	} )
 	AddConVarSettingEnum( "filter_mods", "Very Huge Enum Example", split( "Never gonna give you up Never gonna let you down Never gonna run around and desert you Never gonna make you cry Never gonna say goodbye Never gonna tell a lie and hurt you", " " ) )
 	*/
-	// Nuke weird rui on filter switch :D
-	// RuiSetString( Hud_GetRui( Hud_GetChild( file.menu, "SwtBtnShowFilter" ) ), "buttonText", "" )
 
 	file.modPanels = GetElementsByClassname( file.menu, "ModButton" )
 
@@ -106,8 +103,6 @@ void function InitModMenu()
 	int len = file.modPanels.len()
 	for ( int i = 0; i < len; i++ )
 	{
-
-		// AddButtonEventHandler( button, UIE_CHANGE, OnSettingButtonPressed  )
 		// get panel
 		var panel = file.modPanels[i]
 
@@ -145,7 +140,6 @@ void function InitModMenu()
 
 		Hud_AddEventHandler( child, UIE_CLICK, ResetConVar )
 		file.resetModButtons.append(child)
-		//Hud_AddEventHandler( Hud_GetChild( panel, "ResetModImage" ), UIE_CLICK, ResetConVar )
 
 		// text field nav
 		child = Hud_GetChild( panel, "TextEntrySetting" )
@@ -169,7 +163,6 @@ void function InitModMenu()
 		Hud_AddEventHandler( child, UIE_CLICK, CustomButtonPressed )
 	}
 
-	// Hud_AddEventHandler( Hud_GetChild( file.menu, "BtnModsSearch" ), UIE_LOSE_FOCUS, OnFilterTextPanelChanged )
 	Hud_AddEventHandler( Hud_GetChild( file.menu, "BtnFiltersClear" ), UIE_CLICK, OnClearButtonPressed )
 	// mouse delta
 	AddMouseMovementCaptureHandler( file.menu, UpdateMouseDeltaBuffer )
@@ -457,12 +450,8 @@ array<ConVarData> function GetAllVarsInCategory( array<ConVarData> arr, string c
 		if ( c.catName == catName )
 		{
 			vars.append( arr[i] )
-			// printt( file.conVarList[i].conVar + " is in mod " + file.conVarList[i].modName )
 		}
 	}
-	/*ConVarData empty
-	empty.isEmptySpace = true
-	vars.append( empty )*/
 	return vars
 }
 
@@ -475,12 +464,8 @@ array<ConVarData> function GetAllVarsInMod( array<ConVarData> arr, string modNam
 		if ( c.modName == modName )
 		{
 			vars.append( arr[i] )
-			// printt( file.conVarList[i].conVar + " is in mod " + file.conVarList[i].modName )
 		}
 	}
-	/*ConVarData empty
-	empty.isEmptySpace = true
-	vars.append( empty )*/
 	return vars
 }
 
@@ -565,7 +550,6 @@ void function SetModMenuNameText( var button )
 	else if ( conVar.isModName )
 	{
 		Hud_SetText( modTitle, conVar.modName )
-		// Hud_SetSize( resetButton, 0, int(40 * scaleY) )
 		Hud_SetPos( label, 0, 0 )
 		Hud_SetVisible( label, false )
 		Hud_SetVisible( textField, false )
@@ -578,12 +562,8 @@ void function SetModMenuNameText( var button )
 	else if ( conVar.isCategoryName )
 	{
 		Hud_SetText( label, conVar.catName )
-		// Hud_SetText( resetButton, "#MOD_SETTINGS_RESET_ALL" )
-		// Hud_SetSize( resetButton, int( 120 * scaleX ), int( 40 * scaleY ) )
 		Hud_SetPos( label, 0, 0 )
 		Hud_SetSize( label, int( scaleX * ( 1180 - 420 - 85 ) ), int( scaleY * 40 ) )
-		// Hud_SetSize( customMenuButton, int( 85 * scaleX ), int( 40 * scaleY ) )
-		// Hud_SetVisible( customMenuButton, conVar.hasCustomMenu )
 		Hud_SetVisible( label, true )
 		Hud_SetVisible( textField, false )
 		Hud_SetVisible( enumButton, false )
@@ -706,13 +686,7 @@ void function CheckFocus( var button )
 void function OnFiltersChange( var n )
 {
 	file.scrollOffset = 0
-
-	// HideAllButtons()
-
-	// RefreshModsArray()
-
 	UpdateList()
-
 	UpdateListSliderHeight()
 }
 
