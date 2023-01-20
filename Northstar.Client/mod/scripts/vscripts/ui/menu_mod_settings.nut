@@ -699,7 +699,7 @@ void function OnModMenuClosed()
 	file.isOpen = false
 }
 
-void function AddModTitle( string modName )
+void function AddModTitle( string modName, int stackPos = 2 )
 {
 	file.currentMod = modName
 	if ( file.conVarList.len() > 0 )
@@ -729,13 +729,13 @@ void function AddModTitle( string modName )
 	botBar.modName = modName
 	botBar.spaceType = eEmptySpaceType.BottomBar
 	file.conVarList.extend( [ topBar, modData, botBar ] )
-	file.setFuncs[ expect string( getstackinfos(2)[ "func" ] ) ] <- false
+	file.setFuncs[ expect string( getstackinfos( stackPos )[ "func" ] ) ] <- false
 }
 
-void function AddModCategory( string catName )
+void function AddModCategory( string catName, int stackPos = 2 )
 {
-	if ( !( getstackinfos(2)[ "func" ] in file.setFuncs ) )
-		throw getstackinfos(2)[ "src" ] + " #" + getstackinfos(2)[ "line" ] + "\nCannot add a category before a mod title!"
+	if ( !( getstackinfos( stackPos )[ "func" ] in file.setFuncs ) )
+		throw getstackinfos( stackPos )[ "src" ] + " #" + getstackinfos( stackPos )[ "line" ] + "\nCannot add a category before a mod title!"
 	if ( file.currentCat != "" )
 	{
 		ConVarData space
@@ -755,13 +755,13 @@ void function AddModCategory( string catName )
 	file.conVarList.append( catData )
 
 	file.currentCat = catName
-	file.setFuncs[ expect string( getstackinfos(2)[ "func" ] ) ] = true
+	file.setFuncs[ expect string( getstackinfos( stackPos )[ "func" ] ) ] = true
 }
 
-void function AddModSettingsButton( string buttonLabel, void functionref() onPress )
+void function AddModSettingsButton( string buttonLabel, void functionref() onPress, int stackPos = 2 )
 {
-	if ( !( getstackinfos(2)[ "func" ] in file.setFuncs ) || !file.setFuncs[ expect string( getstackinfos(2)[ "func" ] ) ] )
-		throw getstackinfos(2)[ "src" ] + " #" + getstackinfos(2)[ "line" ] + "\nCannot add a button before a category and mod title!"
+	if ( !( getstackinfos( stackPos )[ "func" ] in file.setFuncs ) || !file.setFuncs[ expect string( getstackinfos( stackPos )[ "func" ] ) ] )
+		throw getstackinfos( stackPos )[ "src" ] + " #" + getstackinfos( stackPos )[ "line" ] + "\nCannot add a button before a category and mod title!"
 
 	ConVarData data
 
@@ -774,10 +774,10 @@ void function AddModSettingsButton( string buttonLabel, void functionref() onPre
 	file.conVarList.append( data )
 }
 
-void function AddConVarSetting( string conVar, string displayName, string type = "" )
+void function AddConVarSetting( string conVar, string displayName, string type = "", int stackPos = 2 )
 {
-	if ( !( getstackinfos(2)[ "func" ] in file.setFuncs ) || !file.setFuncs[ expect string( getstackinfos(2)[ "func" ] ) ] )
-		throw getstackinfos(2)[ "src" ] + " #" + getstackinfos(2)[ "line" ] + "\nCannot add a setting before a category and mod title!"
+	if ( !( getstackinfos( stackPos )[ "func" ] in file.setFuncs ) || !file.setFuncs[ expect string( getstackinfos( stackPos )[ "func" ] ) ] )
+		throw getstackinfos( stackPos )[ "src" ] + " #" + getstackinfos( stackPos )[ "line" ] + "\nCannot add a setting before a category and mod title!"
 	ConVarData data
 
 	data.catName = file.currentCat
@@ -789,10 +789,10 @@ void function AddConVarSetting( string conVar, string displayName, string type =
 	file.conVarList.append( data )
 }
 
-void function AddConVarSettingSlider( string conVar, string displayName, float min = 0.0, float max = 1.0, float stepSize = 0.1, bool forceClamp = false )
+void function AddConVarSettingSlider( string conVar, string displayName, float min = 0.0, float max = 1.0, float stepSize = 0.1, bool forceClamp = false, int stackPos = 2 )
 {
-	if ( !( getstackinfos(2)[ "func" ] in file.setFuncs ) || !file.setFuncs[ expect string( getstackinfos(2)[ "func" ] ) ] )
-		throw getstackinfos(2)[ "src" ] + " #" + getstackinfos(2)[ "line" ] + "\nCannot add a setting before a category and mod title!"
+	if ( !( getstackinfos( stackPos )[ "func" ] in file.setFuncs ) || !file.setFuncs[ expect string( getstackinfos( stackPos )[ "func" ] ) ] )
+		throw getstackinfos( stackPos )[ "src" ] + " #" + getstackinfos( stackPos )[ "line" ] + "\nCannot add a setting before a category and mod title!"
 	ConVarData data
 
 	data.catName = file.currentCat
@@ -809,10 +809,10 @@ void function AddConVarSettingSlider( string conVar, string displayName, float m
 	file.conVarList.append( data )
 }
 
-void function AddConVarSettingEnum( string conVar, string displayName, array<string> values )
+void function AddConVarSettingEnum( string conVar, string displayName, array<string> values, int stackPos = 2 )
 {
-	if ( !( getstackinfos(2)[ "func" ] in file.setFuncs ) || !file.setFuncs[ expect string( getstackinfos(2)[ "func" ] ) ] )
-		throw getstackinfos(2)[ "src" ] + " #" + getstackinfos(2)[ "line" ] + "\nCannot add a setting before a category and mod title!"
+	if ( !( getstackinfos( stackPos )[ "func" ] in file.setFuncs ) || !file.setFuncs[ expect string( getstackinfos( stackPos )[ "func" ] ) ] )
+		throw getstackinfos( stackPos )[ "src" ] + " #" + getstackinfos( stackPos )[ "line" ] + "\nCannot add a setting before a category and mod title!"
 	ConVarData data
 
 	data.catName = file.currentCat
