@@ -170,7 +170,7 @@ void function InitModMenu()
 	Hud_AddEventHandler( Hud_GetChild( file.menu, "BtnModsSearch" ), UIE_CHANGE, void function ( var inputField ) : ()
 	{
 		file.filterText = Hud_GetUTF8Text( inputField )
-		OnFiltersChange(0)
+		OnFiltersChange()
 	} )
 }
 
@@ -661,7 +661,7 @@ void function OnModMenuOpened()
 		RegisterButtonPressedCallback( MOUSE_WHEEL_UP , OnScrollUp )
 		RegisterButtonPressedCallback( MOUSE_WHEEL_DOWN , OnScrollDown )
 		RegisterButtonPressedCallback( MOUSE_LEFT , OnClick )
-		OnFiltersChange(0)
+		OnFiltersChange()
 		file.isOpen = true
 	}
 }
@@ -681,7 +681,7 @@ void function CheckFocus( var button )
 	}
 }
 
-void function OnFiltersChange( var n )
+void function OnFiltersChange()
 {
 	file.scrollOffset = 0
 	UpdateList()
@@ -1005,7 +1005,7 @@ void function OnClearButtonPressed( var button )
 	file.filterText = ""
 	Hud_SetText( Hud_GetChild( file.menu, "BtnModsSearch" ), "" )
 
-	OnFiltersChange(0)
+	OnFiltersChange()
 }
 
 string function SanitizeDisplayName( string displayName )
