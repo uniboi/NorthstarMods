@@ -3,6 +3,7 @@ global function AddModSettingsMenu
 global function AddConVarSetting
 global function AddConVarSettingEnum
 global function AddConVarSettingSlider
+global function AddModSettingsButton
 global function AddModTitle
 global function AddModCategory
 global function PureModulo
@@ -50,6 +51,7 @@ struct {
 	var menu
 	int scrollOffset = 0
 	bool updatingList = false
+	bool isOpen
 
 	array<ConVarData> conVarList
 	// if people use searches - i hate them but it'll do : )
@@ -556,6 +558,7 @@ void function SetModMenuNameText( var button )
 		Hud_SetVisible( enumButton, false )
 		Hud_SetVisible( resetButton, false )
 		Hud_SetVisible( modTitle, false )
+		Hud_SetVisible( resetVGUI, false )
 		Hud_SetVisible( customMenuButton, true )
 		Hud_SetText( customMenuButton, conVar.displayName )
 	}
@@ -673,14 +676,16 @@ void function UpdateListSliderPosition()
 
 void function OnModMenuOpened()
 {
-	file.scrollOffset = 0
-	file.filterText = ""
-
-	RegisterButtonPressedCallback( MOUSE_WHEEL_UP , OnScrollUp )
-	RegisterButtonPressedCallback( MOUSE_WHEEL_DOWN , OnScrollDown )
-	RegisterButtonPressedCallback( MOUSE_LEFT , OnClick )
-
-	OnFiltersChange(0)
+	if( !file.isOpen )
+	{
+		file.scrollOffset = 0
+		file.filterText = ""
+		RegisterButtonPressedCallback( MOUSE_WHEEL_UP , OnScrollUp )
+		RegisterButtonPressedCallback( MOUSE_WHEEL_DOWN , OnScrollDown )
+		RegisterButtonPressedCallback( MOUSE_LEFT , OnClick )
+		OnFiltersChange(0)
+		file.isOpen = true
+	}
 }
 
 void function OnClick( var button )
@@ -713,19 +718,13 @@ void function OnFiltersChange( var n )
 
 void function OnModMenuClosed()
 {
-	try
-	{
-		DeregisterButtonPressedCallback( MOUSE_WHEEL_UP , OnScrollUp )
-		DeregisterButtonPressedCallback( MOUSE_WHEEL_DOWN , OnScrollDown )
-		DeregisterButtonPressedCallback( MOUSE_LEFT , OnClick )
-		// DeregisterButtonPressedCallback( KEY_F1 , ToggleHideMenu )
-	}
-	catch ( ex ) {}
+	DeregisterButtonPressedCallback( MOUSE_WHEEL_UP , OnScrollUp )
+	DeregisterButtonPressedCallback( MOUSE_WHEEL_DOWN , OnScrollDown )
+	DeregisterButtonPressedCallback( MOUSE_LEFT , OnClick )
 
 	file.scrollOffset = 0
-	// UI_SetPresentationType( ePresentationType.DEFAULT )
-	// SetBlurEnabled( !IsMultiplayer() )
-	// Hud_SetVisible( file.menu, false )
+	UpdateListSliderPosition()
+	file.isOpen = false
 }
 
 void function AddModTitle( string modName )
