@@ -264,14 +264,17 @@ void function SetupComboButtonTest( var menu )
 		file.inviteRoomButton = AddComboButton( comboStruct, headerIndex, buttonIndex++, "#MENU_TITLE_INVITE_ROOM" )
 		Hud_AddEventHandler( file.inviteRoomButton, UIE_CLICK, DoRoomInviteIfAllowed )	
 	}
-
-	file.inviteFriendsButton = AddComboButton( comboStruct, headerIndex, buttonIndex++, "#MENU_TITLE_INVITE_FRIENDS" )
-	Hud_AddEventHandler( file.inviteFriendsButton, UIE_CLICK, InviteFriendsIfAllowed )
 	
+	// this is the quickplay menu
 	if ( isModded )
 	{
-		Hud_SetEnabled( file.inviteFriendsButton, false )
-		Hud_SetVisible( file.inviteFriendsButton, false )
+		file.inviteFriendsButton = AddComboButton( comboStruct, headerIndex, buttonIndex++, "MENU_TITLE_QUICKPLAY" )
+		Hud_AddEventHandler( file.inviteFriendsButton, UIE_CLICK, OpenQuickplayMenu )
+	}
+	else
+	{
+		file.inviteFriendsButton = AddComboButton( comboStruct, headerIndex, buttonIndex++, "#MENU_TITLE_INVITE_FRIENDS" )
+		Hud_AddEventHandler( file.inviteFriendsButton, UIE_CLICK, InviteFriendsIfAllowed )
 	}
 
 	// file.toggleMenuModeButton = AddComboButton( comboStruct, headerIndex, buttonIndex++, "#MENU_LOBBY_SWITCH_FD" )
@@ -1192,6 +1195,14 @@ void function OpenServerBrowser( var button )
 	// nothing here yet lol
 	// look at OpenSelectedPlaylistMenu for advancing to server browser menu probably
 	AdvanceMenu( GetMenu( "ServerBrowserMenu" ) )
+}
+
+void function OpenQuickplayMenu( var button )
+{
+	if ( Hud_IsLocked( button ) )
+		return
+
+	AdvanceMenu( GetMenu( "QuickplayMenu" ) )
 }
 
 void function BigPlayButton1_Activate( var button )

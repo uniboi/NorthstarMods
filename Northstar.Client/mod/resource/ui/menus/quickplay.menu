@@ -1,0 +1,277 @@
+resource/ui/menus/quickplay.menu
+{
+	menu
+	{
+		ControlName Frame
+		xpos 0
+		ypos 0
+		zpos 3
+		wide f0
+		tall f0
+		autoResize 0
+		visible 1
+		enabled 1
+		pinCorner 0
+		PaintBackgroundType 0
+		infocus_bgcolor_override "0 0 0 0"
+		outoffocus_bgcolor_override "0 0 0 0"
+
+		Vignette
+		{
+			ControlName ImagePanel
+			InheritProperties MenuVignette
+		}
+
+		Title
+		{
+			ControlName Label
+			InheritProperties MenuTitle
+			labelText "#MENU_TITLE_QUICKPLAY"
+		}
+
+		ImgTopBar
+		{
+			ControlName ImagePanel
+			InheritProperties MenuTopBar
+		}
+
+		ButtonRowAnchor
+		{
+			ControlName Label
+			labelText ""
+
+			xpos 96
+	 		ypos 160
+		}
+
+		ModeSelectView
+		{
+			ControlName CNestedPanel
+			wide 336
+			tall 666 // (panel_height + panel_y_padding) * panels_count
+
+			ModePanel0
+			{
+				ControlName CNestedPanel
+				wide 286
+				tall 165
+
+				Classname ModePanel
+
+				controlSettingsFile "resource/ui/menus/panels/map_grid_button.res"
+			}
+
+			ModePanel1
+			{
+				ControlName CNestedPanel
+				wide 286
+				tall 165
+
+				Classname ModePanel
+
+				controlSettingsFile "resource/ui/menus/panels/map_grid_button.res"
+
+				pin_to_sibling ModePanel0
+				pin_corner_to_sibling TOP_LEFT
+				pin_to_sibling_corner BOTTOM_LEFT
+			}
+
+			ModePanel2
+			{
+				ControlName CNestedPanel
+				wide 286
+				tall 165
+
+				Classname ModePanel
+
+				controlSettingsFile "resource/ui/menus/panels/map_grid_button.res"
+
+				pin_to_sibling ModePanel1
+				pin_corner_to_sibling TOP_LEFT
+				pin_to_sibling_corner BOTTOM_LEFT
+			}
+
+			ModePanel3
+			{
+				ControlName CNestedPanel
+				wide 286
+				tall 165
+
+				Classname ModePanel
+
+				controlSettingsFile "resource/ui/menus/panels/map_grid_button.res"
+
+				pin_to_sibling ModePanel2
+				pin_corner_to_sibling TOP_LEFT
+				pin_to_sibling_corner BOTTOM_LEFT
+			}
+
+			ModeScrollbar
+			{
+				ControlName CNestedPanel
+
+				wide 50
+				tall 666 // Same height as parent
+
+				controlSettingsFile "resource/ui/menus/panels/scrollbar.res"
+
+				pin_to_sibling ModePanel0
+				pin_corner_to_sibling TOP_LEFT
+				pin_to_sibling_corner TOP_RIGHT
+			}
+
+			pin_to_sibling ButtonRowAnchor
+			pin_corner_to_sibling TOP_LEFT
+			pin_to_sibling_corner TOP_LEFT
+		}
+
+		MapSelectView
+		{
+			ControlName CNestedPanel
+			wide 622
+			tall 666 // (panel_height + panel_y_padding) * panels_count
+
+			MapPanel0
+			{
+				ControlName CNestedPanel
+				wide 286
+				tall 165
+
+				Classname MapPanel
+
+				controlSettingsFile "resource/ui/menus/panels/map_grid_button.res"
+			}
+
+			MapPanel1
+			{
+				ControlName CNestedPanel
+				wide 286
+				tall 165
+
+				ypos 2
+
+				Classname MapPanel
+
+				controlSettingsFile "resource/ui/menus/panels/map_grid_button.res"
+
+				pin_to_sibling MapPanel0
+				pin_corner_to_sibling TOP_LEFT
+				pin_to_sibling_corner TOP_RIGHT
+			}
+
+			MapPanel2
+			{
+				ControlName CNestedPanel
+				wide 286
+				tall 165
+
+				ypos 2
+
+				Classname MapPanel
+
+				controlSettingsFile "resource/ui/menus/panels/map_grid_button.res"
+
+				pin_to_sibling MapPanel0
+				pin_corner_to_sibling TOP_LEFT
+				pin_to_sibling_corner BOTTOM_LEFT
+			}
+
+			MapPanel3
+			{
+				ControlName CNestedPanel
+				wide 286
+				tall 165
+
+				ypos 2
+
+				Classname MapPanel
+
+				controlSettingsFile "resource/ui/menus/panels/map_grid_button.res"
+
+				pin_to_sibling MapPanel2
+				pin_corner_to_sibling TOP_LEFT
+				pin_to_sibling_corner TOP_RIGHT
+			}
+
+			MapPanel4
+			{
+				ControlName CNestedPanel
+				wide 286
+				tall 165
+
+				ypos 2
+
+				Classname MapPanel
+
+				controlSettingsFile "resource/ui/menus/panels/map_grid_button.res"
+
+				pin_to_sibling MapPanel2
+				pin_corner_to_sibling TOP_LEFT
+				pin_to_sibling_corner BOTTOM_LEFT
+			}
+
+			MapPanel5
+			{
+				ControlName CNestedPanel
+				wide 286
+				tall 165
+
+				ypos 2
+
+				Classname MapPanel
+
+				controlSettingsFile "resource/ui/menus/panels/map_grid_button.res"
+
+				pin_to_sibling MapPanel4
+				pin_corner_to_sibling TOP_LEFT
+				pin_to_sibling_corner TOP_RIGHT
+			}
+
+			MapScrollbar
+			{
+				ControlName CNestedPanel
+
+				wide 50
+				// height is set in script
+
+				controlSettingsFile "resource/ui/menus/panels/scrollbar.res"
+
+				pin_to_sibling MapPanel1
+				pin_corner_to_sibling TOP_LEFT
+				pin_to_sibling_corner TOP_RIGHT
+			}
+
+			pin_to_sibling ModeSelectView
+			pin_corner_to_sibling TOP_LEFT
+			pin_to_sibling_corner TOP_RIGHT
+		}
+
+		BtnPlay
+		{
+			ControlName RuiButton
+			InheritProperties RuiLoadoutSelectionButton
+			//InheritProperties CallsignIconStore
+			//InheritProperties RuiStartMatchButton
+			//InheritProperties LoadoutButtonMedium // no text
+
+			xpos 10
+
+			tall 100
+			wide 400
+
+			labelText #QUICKPLAY_START
+		
+			pin_to_sibling MapSelectView
+			pin_corner_to_sibling BOTTOM_LEFT
+			pin_to_sibling_corner BOTTOM_RIGHT
+		}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		FooterButtons
+		{
+			ControlName CNestedPanel
+			InheritProperties FooterButtons
+		}
+    }
+}
